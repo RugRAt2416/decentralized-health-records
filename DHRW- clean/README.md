@@ -21,9 +21,6 @@ DHRW uses Ethereum smart contracts and IPFS to store medical record references s
 - Immutable audit logs
 - MetaMask authentication
 
-## Architecture
-(Include architecture image here)
-
 ## How to Run
 1. Start backend server
 2. Deploy smart contract
