@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h3>Upload Test</h3>
+<input type="file" id="file">
+<button onclick="upload()">Upload</button>
+
+<p id="result"></p>
+
+<script>
+function upload() {
+  const file = document.getElementById("file").files[0];
+  const formData = new FormData();
+  formData.append("file", file);
+
+  fetch("http://localhost:5000/upload-record", {
+    method: "POST",
+    body: formData
+  })
+  .then(r => r.json())
+  .then(d => document.getElementById("result").innerText = JSON.stringify(d))
+  .catch(e => document.getElementById("result").innerText = e);
+}
+</script>
+
+</body>
+</html>

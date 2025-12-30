@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>healthRecords | Audit Logs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="auditlog.css">
+</head>
+<body>
+
+<!-- ===== TOP BAR ===== -->
+<header class="topbar">
+  <div class="brand">
+    <img src="https://i.postimg.cc/rFzLNdf1/logo.png" alt="logo">
+    <span>DHRW</span>
+  </div>
+
+  <!-- WALLET -->
+  <div class="wallet-container">
+    <span id="walletDot" class="wallet-dot offline"></span>
+    <button id="walletBtn">🦊 Connect Wallet</button>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <div class="nav-links">
+      <a href="dashboard.html">
+        <i class="fa-solid fa-chart-pie"></i> Dashboard
+      </a>
+
+      <a href="medicalrc.html">
+        <i class="fa-solid fa-file-medical"></i> Medical Records
+      </a>
+
+      <a href="accesscn.html">
+        <i class="fa-solid fa-user-lock"></i> Access Control
+      </a>
+
+      <a class="active" href="auditlog.html">
+        <i class="fa-solid fa-clock-rotate-left"></i> Audit Logs
+      </a>
+    </div>
+
+    <!-- LOGOUT -->
+    <button class="logout-btn" onclick="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="table-card">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Doctor Name</th>
+          <th>Medical Record</th>
+          <th>Action</th>
+          <th>Accessed On</th>
+        </tr>
+      </thead>
+
+      <tbody id="auditBody">
+        <!-- Filled dynamically -->
+      </tbody>
+    </table>
+
+  </main>
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+function logout() {
+  localStorage.removeItem("walletAddress");
+  window.location.href = "login.html";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const records = JSON.parse(localStorage.getItem("healthRecords") || "[]");
+  const tbody = document.getElementById("auditBody");
+
+  tbody.innerHTML = "";
+
+  if (records.length === 0) {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td colspan="4" style="text-align:center; opacity:0.6;">
+        No audit activity yet
+      </td>
+    `;
+    tbody.appendChild(row);
+    return;
+  }
+
+  records.forEach(record => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>Authorized Doctor</td>
+      <td>${record.fileName}</td>
+      <td><span class="badge accessed">${record.action}</span></td>
+      <td>${record.date}</td>
+    `;
+    tbody.appendChild(row);
+  });
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
+<script src="wallet.js"></script>
+
+
+</body>
+</html>

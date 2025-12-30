@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>healthRecords | Medical Records</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="medicalrc.css">
+</head>
+<body>
+
+<!-- ===== TOP BAR ===== -->
+<header class="topbar">
+  <div class="brand">
+    <img src="https://i.postimg.cc/rFzLNdf1/logo.png" alt="logo">
+    <span>DHRW</span>
+  </div>
+
+  <div class="wallet-container">
+    <span id="walletDot" class="wallet-dot offline"></span>
+    <button id="walletBtn">🦊 Connect Wallet</button>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <a href="dashboard.html">
+      <i class="fa-solid fa-chart-line"></i> Dashboard
+    </a>
+
+    <a class="active" href="medicalrc.html">
+      <i class="fa-solid fa-file-medical"></i> Medical Records
+    </a>
+
+    <a href="accesscn.html">
+      <i class="fa-solid fa-user-lock"></i> Access Control
+    </a>
+
+    <a href="auditlog.html">
+      <i class="fa-solid fa-clock-rotate-left"></i> Audit Logs
+    </a>
+
+    <button class="logout-btn" onclick="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="records">
+
+    <h2>Medical Records</h2>
+
+    <!-- Upload Section -->
+    <div class="upload-box">
+      <i class="fa-solid fa-cloud-arrow-up"></i>
+      <p>Upload your medical certificates</p>
+      <button id="uploadBtn">Upload File</button>
+    </div>
+
+    <!-- Records Table -->
+    <section class="section">
+      <h3>Uploaded Records</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>File Name</th>
+            <th>Upload Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="recordsBody">
+          <!-- Filled dynamically -->
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+function logout() {
+  localStorage.removeItem("walletAddress");
+  window.location.href = "login.html";
+}
+
+// Load existing records on page load
+document.addEventListener("DOMContentLoaded", () => {
+  const records = JSON.parse(localStorage.getItem("healthRecords") || "[]");
+  const tbody = document.getElementById("recordsBody");
+
+  records.forEach(record => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${record.fileName}</td>
+      <td>${record.date}</td>
+      <td><span class="status private">${record.status}</span></td>
+    `;
+    tbody.appendChild(row);
+  });
+});
+
+// Upload handler
+document.getElementById("uploadBtn").addEventListener("click", () => {
+  const input = document.createElement("input");
+  input.type = "file";
+
+  input.onchange = async () => {
+    const file = input.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("http://localhost:5000/upload-record", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        alert("Upload failed");
+        return;
+      }
+
+      // 🔥 SAVE TO LOCAL STORAGE (STEP-1 YOU ASKED FOR)
+      const records = JSON.parse(localStorage.getItem("healthRecords") || "[]");
+
+      records.push({
+        fileName: file.name,
+        cid: data.cid,
+        date: new Date().toLocaleDateString(),
+        status: "Private",
+        action: "Uploaded"
+      });
+
+      localStorage.setItem("healthRecords", JSON.stringify(records));
+
+      // Update UI
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${file.name}</td>
+        <td>${new Date().toLocaleDateString()}</td>
+        <td><span class="status private">Private</span></td>
+      `;
+      document.getElementById("recordsBody").prepend(row);
+
+      alert("File encrypted, uploaded & stored successfully");
+
+    } catch (err) {
+      console.error(err);
+      alert("Backend not reachable");
+    }
+  };
+
+  input.click();
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
+<script src="wallet.js"></script>
+
+
+</body>
+</html>

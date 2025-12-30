@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>healthRecords | Dashboard</title> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+<!-- ===== TOP BAR ===== -->
+<header class="topbar">
+  <div class="brand">
+    <img src="https://i.postimg.cc/rFzLNdf1/logo.png" alt="logo">
+    <span>DHRW</span>
+  </div>
+
+  <!-- WALLET -->
+  <div class="wallet-container">
+    <span id="walletDot" class="wallet-dot offline"></span>
+    <button id="walletBtn">🦊 Connect Wallet</button>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <div class="nav-links">
+      <a class="active" href="dashboard.html">
+        <i class="fa-solid fa-chart-pie"></i> Dashboard
+      </a>
+      <a href="medicalrc.html">
+        <i class="fa-solid fa-file-medical"></i> Medical Records
+      </a>
+      <a href="accesscn.html">
+        <i class="fa-solid fa-user-lock"></i> Access Control
+      </a>
+      <a href="auditlog.html">
+        <i class="fa-solid fa-clock-rotate-left"></i> Audit Logs
+      </a>
+    </div>
+
+    <!-- LOGOUT -->
+    <button class="logout-btn" onclick="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="content">
+
+    <h2>Dashboard Overview</h2>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-card">
+        <i class="fa-solid fa-file-medical"></i>
+        <h3 id="recordsCount">0</h3>
+        <p>Records Uploaded</p>
+      </div>
+
+      <div class="stat-card">
+        <i class="fa-solid fa-user-doctor"></i>
+        <h3>1</h3>
+        <p>Doctors with Access</p>
+      </div>
+
+      <div class="stat-card">
+        <i class="fa-solid fa-envelope-open-text"></i>
+        <h3>2</h3>
+        <p>Access Requests</p>
+      </div>
+    </div>
+
+    <!-- UPLOAD HISTORY -->
+    <section class="section">
+      <h3>Upload History</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Record Name</th>
+            <th>Type</th>
+            <th>Uploaded On</th>
+          </tr>
+        </thead>
+        <tbody id="dashboardRecords">
+          <!-- Filled dynamically -->
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+function logout() {
+  localStorage.removeItem("walletAddress");
+  window.location.href = "login.html";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const records = JSON.parse(localStorage.getItem("healthRecords") || "[]");
+  const tbody = document.getElementById("dashboardRecords");
+  const countEl = document.getElementById("recordsCount");
+
+  tbody.innerHTML = "";
+  countEl.textContent = records.length;
+
+  records.forEach(record => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${record.fileName}</td>
+      <td>Medical Record</td>
+      <td>${record.date}</td>
+    `;
+    tbody.appendChild(row);
+  });
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
+<script src="wallet.js"></script>
+
+
+</body>
+</html>

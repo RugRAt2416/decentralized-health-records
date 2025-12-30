@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>healthRecords | Secure Medical Platform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Local CSS -->
+  <link rel="stylesheet" href="final.css">
+</head>
+<body>
+
+<!-- ================= LOGIN PAGE ================= -->
+<div id="loginPage" class="auth-wrapper">
+  <div class="auth-card">
+    <div class="logo">
+      <img src="https://i.ibb.co/bRHvNsyF/logo.png" alt="logo">
+      <h1>healthRecords</h1>
+    </div>
+
+    <form class="form" onsubmit="login(event)">
+      <h2>Login</h2>
+
+      <div class="input-group">
+        <i class="fa-solid fa-envelope"></i>
+        <input type="email" placeholder="Email" required>
+      </div>
+
+      <div class="input-group">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" placeholder="Password" required>
+      </div>
+
+      <button class="primary-btn">Login</button>
+    </form>
+  </div>
+</div>
+
+<!-- ================= DASHBOARD ================= -->
+<div id="dashboardPage" class="hidden">
+
+<header class="topbar">
+  <div class="brand">
+    <img src="https://i.ibb.co/bRHvNsyF/logo.png" alt="logo">
+    <span>healthRecords</span>
+  </div>
+
+  <button class="logout-btn" onclick="logout()">
+    <i class="fa-solid fa-right-from-bracket"></i> Logout
+  </button>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="active" onclick="showSection('dashboard')">Dashboard</a>
+    <a onclick="showSection('records')">Medical Records</a>
+    <a onclick="showSection('access')">Access Control</a>
+    <a onclick="showSection('audit')">Audit Logs</a>
+  </aside>
+
+  <main class="content">
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="section">
+      <h2>Dashboard Overview</h2>
+
+      <div class="cards">
+        <div class="card">
+          <i class="fa-solid fa-file-medical"></i>
+          <h3>16</h3>
+          <p>Records Uploaded</p>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-user-doctor"></i>
+          <h3>5</h3>
+          <p>Doctors with Access</p>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-envelope-open-text"></i>
+          <h3>3</h3>
+          <p>Access Requests</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MEDICAL RECORDS -->
+    <section id="records" class="section hidden">
+      <h2>Medical Records</h2>
+      <div class="upload-box">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        <p>Upload Medical Certificates</p>
+        <button>Upload File</button>
+      </div>
+    </section>
+
+    <!-- ACCESS CONTROL -->
+    <section id="access" class="section hidden">
+      <h2>Access Control</h2>
+      <table>
+        <tr>
+          <th>Doctor</th>
+          <th>Record</th>
+          <th>Action</th>
+        </tr>
+        <tr>
+          <td>Dr. Rahul Sharma</td>
+          <td>ECG_Report.pdf</td>
+          <td>
+            <button class="approve">Approve</button>
+            <button class="reject">Reject</button>
+          </td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- AUDIT LOGS -->
+    <section id="audit" class="section hidden">
+      <h2>Audit Logs</h2>
+      <table>
+        <tr>
+          <th>Doctor</th>
+          <th>Record</th>
+          <th>Action</th>
+          <th>Date</th>
+        </tr>
+        <tr>
+          <td>Dr. Meera Iyer</td>
+          <td>MRI_Scan.pdf</td>
+          <td>Viewed</td>
+          <td>16 Sep 2025</td>
+        </tr>
+      </table>
+    </section>
+
+  </main>
+</div>
+</div>
+
+<!-- ================= JS ================= -->
+<script>
+function login(e) {
+  e.preventDefault();
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("dashboardPage").classList.remove("hidden");
+}
+
+function logout() {
+  document.getElementById("dashboardPage").classList.add("hidden");
+  document.getElementById("loginPage").classList.remove("hidden");
+}
+
+function showSection(id) {
+  document.querySelectorAll(".section").forEach(s => s.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+
+  document.querySelectorAll(".sidebar a").forEach(a => a.classList.remove("active"));
+  event.target.classList.add("active");
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DHRW | Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="login.css">
+</head>
+
+
+<body>
+<div class="cursor-glow"></div>
+
+<div class="auth-wrapper">
+
+  <div class="auth-card">
+
+    <!-- Logo -->
+    <div class="logo">
+      <img src="https://i.postimg.cc/rFzLNdf1/logo.png" alt="healthRecords">
+      <h1>DHRW</h1>
+      <p>Secure Medical Record Management</p>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+    </div>
+
+   <!-- LOGIN FORM -->
+<form id="loginForm" onsubmit="redirect(event)">
+  <h2>Login</h2>
+
+  <div class="input-group">
+    <i class="fa-solid fa-envelope"></i>
+    <input type="email" placeholder="Email ID" required>
+  </div>
+
+  <!-- PASSWORD WITH TOGGLE -->
+  <div class="input-group password-group">
+  <i class="fa-solid fa-lock"></i>
+  <input type="password" placeholder="Password" required>
+  <span class="toggle-password">
+    <i class="fa-solid fa-eye"></i>
+  </span>
+</div>
+
+
+  <p class="error-msg hidden">
+    <i class="fa-solid fa-circle-exclamation"></i>
+    Invalid email or password. Please try again.
+  </p>
+
+  <button type="submit" class="primary-btn">Login</button>
+
+  <p class="switch">
+    New user?
+    <a onclick="showSignup()">Create an account</a>
+  </p>
+</form>
+
+
+    <!-- SIGNUP FORM -->
+    <form id="signupForm" class="hidden" onsubmit="redirect(event)">
+      <h2>Sign Up</h2>
+
+      <div class="input-group">
+        <i class="fa-solid fa-user"></i>
+        <input type="text" placeholder="Full Name" required>
+      </div>
+
+      <div class="input-group">
+        <i class="fa-solid fa-envelope"></i>
+        <input type="email" placeholder="Email ID" required>
+      </div>
+
+      <div class="input-group">
+        <i class="fa-solid fa-phone"></i>
+        <input type="tel" placeholder="Phone Number" required>
+      </div>
+
+      <div class="input-group">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" placeholder="Password" required>
+      </div>
+      <button class="primary-btn" type="submit">
+        <span class="btn-text">Login</span>
+        <span class="spinner"></span>
+        <span class="success-icon">
+          <i class="fa-solid fa-check"></i>
+        </span>
+      </button>
+      <p class="switch">
+        Already have an account?
+        <a onclick="showLogin()">Login</a>
+      </p>
+    </form>
+
+  </div>
+</div>
+<script>
+  function redirect(e) {
+    e.preventDefault(); // stops page refresh
+    window.location.href = "./dashboard.html";
+  }
+
+  function showSignup() {
+    document.getElementById("loginForm").classList.add("hidden");
+    document.getElementById("signupForm").classList.remove("hidden");
+  }
+
+  function showLogin() {
+    document.getElementById("signupForm").classList.add("hidden");
+    document.getElementById("loginForm").classList.remove("hidden");
+  }
+</script>
+<script>
+  const glow = document.querySelector('.cursor-glow');
+
+  document.addEventListener('mousemove', (e) => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+  });
+</script>
+<script>
+  document.querySelectorAll('.toggle-password').forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const input = toggle.previousElementSibling;
+      const icon = toggle.querySelector('i');
+
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    });
+  });
+</script>
+</body>
+

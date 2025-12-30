@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>healthRecords | Access Control</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="accesscn.css">
+</head>
+<body>
+
+<!-- ===== TOP BAR ===== -->
+<header class="topbar">
+  <div class="brand">
+    <img src="https://i.postimg.cc/rFzLNdf1/logo.png" alt="logo">
+    <span>DHRW</span>
+  </div>
+
+  <!-- WALLET BUTTON -->
+  <div class="wallet-container">
+    <span id="walletDot" class="wallet-dot offline"></span>
+    <button id="walletBtn">🦊 Connect Wallet</button>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <div class="nav-links">
+      <a href="dashboard.html">
+        <i class="fa-solid fa-chart-pie"></i> Dashboard
+      </a>
+
+      <a href="medicalrc.html">
+        <i class="fa-solid fa-file-medical"></i> Medical Records
+      </a>
+
+      <a class="active" href="accesscn.html">
+        <i class="fa-solid fa-user-lock"></i> Access Control
+      </a>
+
+      <a href="auditlog.html">
+        <i class="fa-solid fa-clock-rotate-left"></i> Audit Logs
+      </a>
+    </div>
+
+    <!-- LOGOUT -->
+    <button class="logout-btn" onclick="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="content">
+
+    <h2>Access Control</h2>
+    <p class="subtitle">
+      Manage doctor requests to access your medical records
+    </p>
+
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Doctor Name</th>
+            <th>Specialization</th>
+            <th>Requested Record</th>
+            <th>Request Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Dr. Rahul Sharma</td>
+            <td>Cardiology</td>
+            <td>ECG_Report.pdf</td>
+            <td>16 Sep 2025</td>
+            <td>
+              <button class="approve">
+                <i class="fa-solid fa-check"></i> Approve
+              </button>
+              <button class="reject">
+                <i class="fa-solid fa-xmark"></i> Reject
+              </button>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Dr. Meera Iyer</td>
+            <td>Neurology</td>
+            <td>MRI_Scan.pdf</td>
+            <td>15 Sep 2025</td>
+            <td>
+              <button
+  class="approve protected"
+  data-record-id="0"
+  data-doctor-address="0x107e0e5e2103a38b0e83b21b37a82fa00983d948"
+>
+  <i class="fa-solid fa-check"></i> Approve
+</button>
+
+
+              <button class="reject">
+                <i class="fa-solid fa-xmark"></i> Reject
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+function logout() {
+  localStorage.removeItem("walletAddress");
+  window.location.href = "login.html";
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
+<script src="./wallet.js"></script>
+<!-- CUSTOM MODAL -->
+<div id="customModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <h3>Wallet Required</h3>
+    <p>Please connect your wallet to continue.</p>
+    <button id="modalOkBtn">OK</button>
+  </div>
+</div>
+
+</body>
+</html>

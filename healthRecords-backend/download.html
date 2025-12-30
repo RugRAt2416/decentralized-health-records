@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h3>Download & Decrypt Test</h3>
+
+<input id="cid" placeholder="Paste CID here" size="60" />
+<br><br>
+<button onclick="download()">Download & Decrypt</button>
+
+<p id="result"></p>
+
+<script>
+function download() {
+  fetch("http://localhost:5000/download-record", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      cid: document.getElementById("cid").value
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("result").innerText =
+      JSON.stringify(data);
+  })
+  .catch(err => {
+    document.getElementById("result").innerText = err;
+  });
+}
+</script>
+
+</body>
+</html>
