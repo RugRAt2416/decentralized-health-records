@@ -32,6 +32,11 @@ Encrypts files and stores them via IPFS-backed backend
 
 Patients stay in control — always.
 
+## How to Run
+1. Start backend server
+2. Deploy smart contract
+3. Open frontend and connect MetaMask
+
 🧠 Key Features- 
 
 🔐 Wallet-Based Authentication (MetaMask / Web3)
