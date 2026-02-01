@@ -16,7 +16,7 @@ Prone to unauthorized access and manipulation
 
 Patients have no transparency or ownership over who accesses their sensitive medical data.
 
-💡 Solution Overview- 
+💡 Solution Overview:
 
 DHRW is a decentralized health record platform that:
 
